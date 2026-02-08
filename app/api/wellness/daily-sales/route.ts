@@ -16,8 +16,9 @@ export async function GET() {
     console.log('Database connection verified');
     
     // Get the latest date first
+    // Use TO_CHAR to return date as string directly, avoiding timezone conversion issues
     const latestDateQuery = `
-      SELECT MAX(invoice_date::date) as latest_date
+      SELECT MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')) as latest_date
       FROM him_ttdi.invoices;
     `;
     
@@ -87,13 +88,9 @@ export async function GET() {
     console.log('Pending payments result:', pendingData);
 
     // Get yesterday's sales for comparison
-    // Parse latestDate as string to avoid timezone issues
-    const latestDateStr = typeof latestDate === 'string' 
-      ? latestDate 
-      : latestDate.toISOString().split('T')[0];
-    
+    // latestDate is already a string in YYYY-MM-DD format from TO_CHAR
     // Calculate yesterday by parsing the date string directly
-    const [year, month, day] = latestDateStr.split('-').map(Number);
+    const [year, month, day] = latestDate.split('-').map(Number);
     const latestDateObj = new Date(year, month - 1, day);
     const yesterdayDateObj = new Date(latestDateObj);
     yesterdayDateObj.setDate(yesterdayDateObj.getDate() - 1);
@@ -106,6 +103,8 @@ export async function GET() {
       return `${y}-${m}-${d}`;
     };
     const yesterdayDateStr = formatDate(yesterdayDateObj);
+    
+    console.log('Latest date:', latestDate, 'Yesterday date:', yesterdayDateStr);
 
     const yesterdayQuery = `
       SELECT 
