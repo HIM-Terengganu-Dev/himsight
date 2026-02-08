@@ -11,13 +11,12 @@ export async function GET() {
     // Get the latest date from all relevant tables
     // Use TO_CHAR to return date as string directly, avoiding timezone conversion issues
     // Note: invoice_date is timestamp without time zone stored in Malaysia time
-    // We use TO_CHAR directly on invoice_date to get the date string without timezone conversion
-    // For invoice_date, we need to handle it as Malaysia time (UTC+8)
+    // We use TO_CHAR directly on invoice_date - this works the same way as daily-registration route
     const latestDateQuery = `
       SELECT 
         GREATEST(
           COALESCE(
-            (SELECT MAX(TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) FROM him_ttdi.invoices),
+            (SELECT MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')) FROM him_ttdi.invoices),
             '1970-01-01'
           ),
           COALESCE(
