@@ -11,23 +11,20 @@ export async function GET() {
     // Get the latest date from all relevant tables
     // Use TO_CHAR to return date as string directly, avoiding timezone conversion issues
     // Note: invoice_date is timestamp without time zone stored in Malaysia time
-    // We need to add 8 hours before casting to date to get the correct Malaysia date
+    // We use TO_CHAR directly on invoice_date to get the date string without timezone conversion
     const latestDateQuery = `
       SELECT 
-        TO_CHAR(
-          GREATEST(
-            COALESCE(MAX(DATE(invoice_date + INTERVAL '8 hours')), '1970-01-01'::date),
-            COALESCE(MAX(visit_date), '1970-01-01'::date),
-            COALESCE(MAX(DATE(prescription_date)), '1970-01-01'::date)
-          ),
-          'YYYY-MM-DD'
+        GREATEST(
+          COALESCE(MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')), '1970-01-01'),
+          COALESCE(MAX(TO_CHAR(visit_date, 'YYYY-MM-DD')), '1970-01-01'),
+          COALESCE(MAX(TO_CHAR(prescription_date, 'YYYY-MM-DD')), '1970-01-01')
         ) as latest_date
       FROM (
-        SELECT DATE(invoice_date + INTERVAL '8 hours') as invoice_date, NULL::date as visit_date, NULL::date as prescription_date FROM him_ttdi.invoices
+        SELECT invoice_date, NULL::date as visit_date, NULL::timestamp as prescription_date FROM him_ttdi.invoices
         UNION ALL
-        SELECT NULL::date, visit_date, NULL::date FROM him_ttdi.consultations
+        SELECT NULL::timestamp, visit_date, NULL::timestamp FROM him_ttdi.consultations
         UNION ALL
-        SELECT NULL::date, NULL::date, DATE(prescription_date) FROM him_ttdi.procedure_prescriptions
+        SELECT NULL::timestamp, NULL::date, prescription_date FROM him_ttdi.procedure_prescriptions
       ) combined_dates;
     `;
     
@@ -41,10 +38,11 @@ export async function GET() {
     }
 
     // latestDate is already a string in YYYY-MM-DD format from TO_CHAR
-    const latestDateStr = latestDate;
-
+    // Log for debugging
+    console.log('API: /api/wellness/latest-date - Latest date from DB:', latestDate);
+    
     return NextResponse.json({
-      latestDate: latestDateStr,
+      latestDate: latestDate,
     });
   } catch (error) {
     console.error('API: /api/wellness/latest-date - Database error:', error);
