@@ -87,9 +87,25 @@ export async function GET() {
     console.log('Pending payments result:', pendingData);
 
     // Get yesterday's sales for comparison
-    const yesterdayDate = new Date(latestDate);
-    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-    const yesterdayDateStr = yesterdayDate.toISOString().split('T')[0];
+    // Parse latestDate as string to avoid timezone issues
+    const latestDateStr = typeof latestDate === 'string' 
+      ? latestDate 
+      : latestDate.toISOString().split('T')[0];
+    
+    // Calculate yesterday by parsing the date string directly
+    const [year, month, day] = latestDateStr.split('-').map(Number);
+    const latestDateObj = new Date(year, month - 1, day);
+    const yesterdayDateObj = new Date(latestDateObj);
+    yesterdayDateObj.setDate(yesterdayDateObj.getDate() - 1);
+    
+    // Format as YYYY-MM-DD without timezone conversion
+    const formatDate = (date: Date) => {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    };
+    const yesterdayDateStr = formatDate(yesterdayDateObj);
 
     const yesterdayQuery = `
       SELECT 

@@ -56,11 +56,17 @@ export async function GET(request: Request) {
     const result = await pool.query(query, [startDate, endDate]);
     console.log(`Found ${result.rows.length} days of data`);
 
-    const data = result.rows.map(row => ({
-      date: row.date,
-      totalSales: parseFloat(row.total_sales) || 0,
-      visitCount: parseInt(row.visit_count) || 0,
-    }));
+    const data = result.rows.map(row => {
+      // Ensure date is returned as string in YYYY-MM-DD format
+      const dateStr = typeof row.date === 'string' 
+        ? row.date 
+        : row.date.toISOString().split('T')[0];
+      return {
+        date: dateStr,
+        totalSales: parseFloat(row.total_sales) || 0,
+        visitCount: parseInt(row.visit_count) || 0,
+      };
+    });
 
     return NextResponse.json(data);
   } catch (error) {

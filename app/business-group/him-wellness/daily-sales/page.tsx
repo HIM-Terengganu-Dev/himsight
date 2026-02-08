@@ -281,12 +281,24 @@ export default function DailySalesDashboard() {
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                       <XAxis 
                         dataKey="date" 
-                        tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
+                        tickFormatter={(date) => {
+                          // Handle date string format YYYY-MM-DD
+                          if (typeof date === 'string') {
+                            const [year, month, day] = date.split('-');
+                            const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                            return dateObj.toLocaleDateString('en-MY', { day: 'numeric', month: 'short' });
+                          }
+                          return new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' });
+                        }}
                         stroke="#94a3b8"
                         style={{ fontSize: '12px' }}
                         tickLine={false}
                         axisLine={false}
                         dy={10}
+                        interval={0}
+                        angle={-45}
+                        textAnchor="end"
+                        height={60}
                       />
                       <YAxis 
                         stroke="#94a3b8"
