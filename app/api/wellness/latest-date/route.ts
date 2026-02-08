@@ -9,14 +9,18 @@ export async function GET() {
     }
 
     // Get the latest date from all relevant tables
+    // Use TO_CHAR to return date as string directly, avoiding timezone conversion issues
     // Note: invoice_date is timestamp without time zone stored in Malaysia time
     // We need to add 8 hours before casting to date to get the correct Malaysia date
     const latestDateQuery = `
       SELECT 
-        GREATEST(
-          COALESCE(MAX(DATE(invoice_date + INTERVAL '8 hours')), '1970-01-01'::date),
-          COALESCE(MAX(visit_date), '1970-01-01'::date),
-          COALESCE(MAX(DATE(prescription_date)), '1970-01-01'::date)
+        TO_CHAR(
+          GREATEST(
+            COALESCE(MAX(DATE(invoice_date + INTERVAL '8 hours')), '1970-01-01'::date),
+            COALESCE(MAX(visit_date), '1970-01-01'::date),
+            COALESCE(MAX(DATE(prescription_date)), '1970-01-01'::date)
+          ),
+          'YYYY-MM-DD'
         ) as latest_date
       FROM (
         SELECT DATE(invoice_date + INTERVAL '8 hours') as invoice_date, NULL::date as visit_date, NULL::date as prescription_date FROM him_ttdi.invoices
@@ -36,10 +40,8 @@ export async function GET() {
       });
     }
 
-    // Return as string in YYYY-MM-DD format
-    const latestDateStr = typeof latestDate === 'string' 
-      ? latestDate 
-      : latestDate.toISOString().split('T')[0];
+    // latestDate is already a string in YYYY-MM-DD format from TO_CHAR
+    const latestDateStr = latestDate;
 
     return NextResponse.json({
       latestDate: latestDateStr,
