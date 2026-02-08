@@ -153,7 +153,10 @@ export default function DailySalesDashboard() {
   };
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+    // Parse date string directly without timezone conversion
+    // dateString is in YYYY-MM-DD format
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // month is 0-indexed
     return date.toLocaleDateString('en-MY', { 
       day: 'numeric',
       month: 'short',
