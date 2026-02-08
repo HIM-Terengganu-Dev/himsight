@@ -1,0 +1,2115 @@
+{
+  "schema_name": "him_ttdi",
+  "tables": [
+    {
+      "table_name": "consultations",
+      "columns": [
+        {
+          "name": "consultation_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.consultations_consultation_id_seq'::regclass)"
+        },
+        {
+          "name": "patient_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "visit_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "visit_time",
+          "type": "time without time zone",
+          "udt_name": "time",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "start_treatment_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "start_treatment_time",
+          "type": "time without time zone",
+          "udt_name": "time",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "end_treatment_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "end_treatment_time",
+          "type": "time without time zone",
+          "udt_name": "time",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "end_pharmacy_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "end_pharmacy_time",
+          "type": "time without time zone",
+          "udt_name": "time",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "end_payment_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "end_payment_time",
+          "type": "time without time zone",
+          "udt_name": "time",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "diagnosis",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "prescription",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "procedures",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "disposables",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "imagings",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "generals",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "lab_tests",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "packages",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "total_payment",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "consultation_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "consultations_patient_id_fkey",
+          "column": "patient_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "patients",
+            "column": "patient_id"
+          }
+        },
+        {
+          "constraint_name": "consultations_doctor_id_fkey",
+          "column": "doctor_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "doctors",
+            "column": "doctor_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433860_1_not_null",
+          "definition": "consultation_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433860_4_not_null",
+          "definition": "visit_date IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "csv_uploads",
+      "columns": [
+        {
+          "name": "upload_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.csv_uploads_upload_id_seq'::regclass)"
+        },
+        {
+          "name": "file_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "table_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "rows_processed",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "rows_inserted",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "rows_updated",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "rows_failed",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "upload_status",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": "'pending'::character varying"
+        },
+        {
+          "name": "error_message",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "uploaded_by",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "uploaded_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "file_hash",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 64,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "file_path",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "metadata",
+          "type": "jsonb",
+          "udt_name": "jsonb",
+          "max_length": null,
+          "nullable": true,
+          "default": "'{}'::jsonb"
+        }
+      ],
+      "primary_keys": [
+        "upload_id"
+      ],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1434012_1_not_null",
+          "definition": "upload_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1434012_2_not_null",
+          "definition": "file_name IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1434012_3_not_null",
+          "definition": "table_name IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "daily_doctor_sales",
+      "columns": [
+        {
+          "name": "daily_sale_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.daily_doctor_sales_daily_sale_id_seq'::regclass)"
+        },
+        {
+          "name": "sale_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "visit_count",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "total_sales",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "daily_sale_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "daily_doctor_sales_doctor_id_fkey",
+          "column": "doctor_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "doctors",
+            "column": "doctor_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433992_1_not_null",
+          "definition": "daily_sale_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433992_2_not_null",
+          "definition": "sale_date IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "doctors",
+      "columns": [
+        {
+          "name": "doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.doctors_doctor_id_seq'::regclass)"
+        },
+        {
+          "name": "doctor_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "doctor_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "doctor_id"
+      ],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433832_1_not_null",
+          "definition": "doctor_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433832_2_not_null",
+          "definition": "doctor_name IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "invoices",
+      "columns": [
+        {
+          "name": "invoice_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.invoices_invoice_id_seq'::regclass)"
+        },
+        {
+          "name": "patient_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "invoice_date",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "invoice_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "receipt_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "ref_no",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "invoice_total",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "payment_method",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "tpa_panel_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "employee_policy_details",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "remark",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "invoice_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "invoices_doctor_id_fkey",
+          "column": "doctor_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "doctors",
+            "column": "doctor_id"
+          }
+        },
+        {
+          "constraint_name": "invoices_patient_id_fkey",
+          "column": "patient_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "patients",
+            "column": "patient_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433965_1_not_null",
+          "definition": "invoice_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433965_4_not_null",
+          "definition": "invoice_date IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433965_8_not_null",
+          "definition": "invoice_total IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "itemized_sales",
+      "columns": [
+        {
+          "name": "sale_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.itemized_sales_sale_id_seq'::regclass)"
+        },
+        {
+          "name": "patient_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "visit_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "visit_time",
+          "type": "time without time zone",
+          "udt_name": "time",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "invoice_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "receipt_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "consultation_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "medicine_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "procedure_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "dispensing_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "lab_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "imaging_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "general_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "package_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "discount_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "tax_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "total_amount",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "payment_status",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "paid_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "sale_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "itemized_sales_patient_id_fkey",
+          "column": "patient_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "patients",
+            "column": "patient_id"
+          }
+        },
+        {
+          "constraint_name": "itemized_sales_doctor_id_fkey",
+          "column": "doctor_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "doctors",
+            "column": "doctor_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433931_1_not_null",
+          "definition": "sale_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433931_4_not_null",
+          "definition": "visit_date IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "lead_source_assignments",
+      "columns": [
+        {
+          "name": "assignment_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.lead_source_assignments_assignment_id_seq'::regclass)"
+        },
+        {
+          "name": "lead_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "source_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        }
+      ],
+      "primary_keys": [
+        "assignment_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "lead_source_assignments_lead_id_fkey",
+          "column": "lead_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "leads",
+            "column": "lead_id"
+          }
+        },
+        {
+          "constraint_name": "lead_source_assignments_source_id_fkey",
+          "column": "source_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "lead_sources",
+            "column": "source_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1474614_1_not_null",
+          "definition": "assignment_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1474614_2_not_null",
+          "definition": "lead_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1474614_3_not_null",
+          "definition": "source_id IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "lead_sources",
+      "columns": [
+        {
+          "name": "source_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.lead_sources_source_id_seq'::regclass)"
+        },
+        {
+          "name": "source_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        }
+      ],
+      "primary_keys": [
+        "source_id"
+      ],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1474572_1_not_null",
+          "definition": "source_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1474572_2_not_null",
+          "definition": "source_name IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "lead_tag_assignments",
+      "columns": [
+        {
+          "name": "assignment_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.lead_tag_assignments_assignment_id_seq'::regclass)"
+        },
+        {
+          "name": "lead_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "tag_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        }
+      ],
+      "primary_keys": [
+        "assignment_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "lead_tag_assignments_lead_id_fkey",
+          "column": "lead_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "leads",
+            "column": "lead_id"
+          }
+        },
+        {
+          "constraint_name": "lead_tag_assignments_tag_id_fkey",
+          "column": "tag_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "lead_tags",
+            "column": "tag_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1474594_1_not_null",
+          "definition": "assignment_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1474594_2_not_null",
+          "definition": "lead_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1474594_3_not_null",
+          "definition": "tag_id IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "lead_tags",
+      "columns": [
+        {
+          "name": "tag_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.lead_tags_tag_id_seq'::regclass)"
+        },
+        {
+          "name": "tag_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        }
+      ],
+      "primary_keys": [
+        "tag_id"
+      ],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1474561_1_not_null",
+          "definition": "tag_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1474561_2_not_null",
+          "definition": "tag_name IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "leads",
+      "columns": [
+        {
+          "name": "lead_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.leads_lead_id_seq'::regclass)"
+        },
+        {
+          "name": "lead_external_id",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "username",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 500,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "phone_number",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "email",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "work_phone",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "work_email",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "postal_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "city",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "province_state",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "country",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "gender",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "company_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "job_title",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "first_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "last_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "received_date",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "received_time",
+          "type": "time without time zone",
+          "udt_name": "time",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "status",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "source_traffic",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "source_action",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "source_scenario",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "zalo",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "line",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "whatsapp",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "messenger",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "instagram",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "facebook",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "telegram",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "snapchat",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "skype",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "wechat",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "kakaotalk",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "viber",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "twitter",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "linkedin",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "weibo",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "tiktok",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "now()"
+        },
+        {
+          "name": "source_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        }
+      ],
+      "primary_keys": [
+        "lead_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "leads_source_id_fkey",
+          "column": "source_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "lead_sources",
+            "column": "source_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1474583_1_not_null",
+          "definition": "lead_id IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "medicine_prescriptions",
+      "columns": [
+        {
+          "name": "prescription_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.medicine_prescriptions_prescription_id_seq'::regclass)"
+        },
+        {
+          "name": "patient_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "prescribing_doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "dispensing_staff",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "prescription_date",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "diagnosis",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "medicine_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "medicine_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "quantity",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "prescription_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "medicine_prescriptions_patient_id_fkey",
+          "column": "patient_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "patients",
+            "column": "patient_id"
+          }
+        },
+        {
+          "constraint_name": "medicine_prescriptions_prescribing_doctor_id_fkey",
+          "column": "prescribing_doctor_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "doctors",
+            "column": "doctor_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433908_1_not_null",
+          "definition": "prescription_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433908_5_not_null",
+          "definition": "prescription_date IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "patients",
+      "columns": [
+        {
+          "name": "patient_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.patients_patient_id_seq'::regclass)"
+        },
+        {
+          "name": "mrn_no",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "id_no",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "id_type",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "date_of_birth",
+          "type": "date",
+          "udt_name": "date",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "age",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "gender",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 20,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "nationality",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 100,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "race",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "ethnicity",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "marital_status",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "email",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "phone_no",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "visit_total",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": "0"
+        },
+        {
+          "name": "first_visit_date",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "patient_id"
+      ],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433843_15_not_null",
+          "definition": "phone_no IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433843_1_not_null",
+          "definition": "patient_id IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "procedure_prescriptions",
+      "columns": [
+        {
+          "name": "prescription_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": false,
+          "default": "nextval('him_ttdi.procedure_prescriptions_prescription_id_seq'::regclass)"
+        },
+        {
+          "name": "patient_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "prescribing_doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "dispensing_staff",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "prescription_date",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": false,
+          "default": null
+        },
+        {
+          "name": "diagnosis",
+          "type": "text",
+          "udt_name": "text",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "procedure_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "procedure_code",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "quantity",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      ],
+      "primary_keys": [
+        "prescription_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint_name": "procedure_prescriptions_patient_id_fkey",
+          "column": "patient_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "patients",
+            "column": "patient_id"
+          }
+        },
+        {
+          "constraint_name": "procedure_prescriptions_prescribing_doctor_id_fkey",
+          "column": "prescribing_doctor_id",
+          "references": {
+            "schema": "him_ttdi",
+            "table": "doctors",
+            "column": "doctor_id"
+          }
+        }
+      ],
+      "indexes": [],
+      "constraints": [
+        {
+          "type": "CHECK",
+          "name": "1433830_1433885_1_not_null",
+          "definition": "prescription_id IS NOT NULL"
+        },
+        {
+          "type": "CHECK",
+          "name": "1433830_1433885_5_not_null",
+          "definition": "prescription_date IS NOT NULL"
+        }
+      ]
+    },
+    {
+      "table_name": "v_doctor_performance",
+      "columns": [
+        {
+          "name": "doctor_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "doctor_name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "total_consultations",
+          "type": "bigint",
+          "udt_name": "int8",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "unique_patients",
+          "type": "bigint",
+          "udt_name": "int8",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "total_revenue",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "avg_consultation_value",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        }
+      ],
+      "primary_keys": [],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": []
+    },
+    {
+      "table_name": "v_patient_summary",
+      "columns": [
+        {
+          "name": "patient_id",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "mrn_no",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "name",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "phone_no",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 50,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "email",
+          "type": "character varying",
+          "udt_name": "varchar",
+          "max_length": 255,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "first_visit_date",
+          "type": "timestamp without time zone",
+          "udt_name": "timestamp",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "visit_total",
+          "type": "integer",
+          "udt_name": "int4",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "consultation_count",
+          "type": "bigint",
+          "udt_name": "int8",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "invoice_count",
+          "type": "bigint",
+          "udt_name": "int8",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        },
+        {
+          "name": "total_spent",
+          "type": "numeric",
+          "udt_name": "numeric",
+          "max_length": null,
+          "nullable": true,
+          "default": null
+        }
+      ],
+      "primary_keys": [],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": []
+    }
+  ]
+}
