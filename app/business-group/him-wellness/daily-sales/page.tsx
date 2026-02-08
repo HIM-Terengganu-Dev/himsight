@@ -277,32 +277,33 @@ export default function DailySalesDashboard() {
 
               {/* Sales Trend Chart */}
               {trendData.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Sales Trend</h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={trendData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                      <XAxis 
-                        dataKey="date" 
-                        tickFormatter={(date) => {
-                          // Handle date string format YYYY-MM-DD
-                          if (typeof date === 'string') {
-                            const [year, month, day] = date.split('-');
-                            const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-                            return dateObj.toLocaleDateString('en-MY', { day: 'numeric', month: 'short' });
-                          }
-                          return new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' });
-                        }}
-                        stroke="#94a3b8"
-                        style={{ fontSize: '12px' }}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={10}
-                        interval={0}
-                        angle={-45}
-                        textAnchor="end"
-                        height={60}
-                      />
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-slate-200 shadow-sm overflow-x-auto">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-4 sm:mb-6">Sales Trend</h3>
+                  <div className="w-full min-w-[600px] sm:min-w-0">
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart data={trendData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                        <XAxis 
+                          dataKey="date" 
+                          tickFormatter={(date) => {
+                            // Handle date string format YYYY-MM-DD
+                            if (typeof date === 'string') {
+                              const [year, month, day] = date.split('-');
+                              const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                              return dateObj.toLocaleDateString('en-MY', { day: 'numeric', month: 'short' });
+                            }
+                            return new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' });
+                          }}
+                          stroke="#94a3b8"
+                          style={{ fontSize: '10px' }}
+                          tickLine={false}
+                          axisLine={false}
+                          dy={10}
+                          interval="preserveStartEnd"
+                          angle={-45}
+                          textAnchor="end"
+                          height={60}
+                        />
                       <YAxis 
                         stroke="#94a3b8"
                         style={{ fontSize: '12px' }}

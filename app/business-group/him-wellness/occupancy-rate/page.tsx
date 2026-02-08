@@ -289,130 +289,140 @@ export default function OccupancyRateDashboard() {
 
               {/* Consultation Bar Chart */}
               {occupancyData.consultationChartData && occupancyData.consultationChartData.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Consultation Occupancy Rate</h3>
-                  <ResponsiveContainer width="100%" height={400}>
-                    <BarChart data={occupancyData.consultationChartData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                      <XAxis 
-                        dataKey="date" 
-                        tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
-                        stroke="#94a3b8"
-                        style={{ fontSize: '12px' }}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={10}
-                      />
-                      <YAxis 
-                        stroke="#94a3b8"
-                        style={{ fontSize: '12px' }}
-                        domain={[0, 100]}
-                        tickFormatter={(value) => `${value}%`}
-                        label={{ value: 'Occupancy Rate (%)', angle: -90, position: 'insideLeft', style: { fill: '#94a3b8' } }}
-                        tickLine={false}
-                        axisLine={false}
-                        dx={-10}
-                      />
-                      <Tooltip 
-                        labelFormatter={(label) => formatDate(label)}
-                        formatter={(value: number) => [`${value.toFixed(1)}%`, 'Consultation Occupancy']}
-                        contentStyle={{
-                          backgroundColor: '#ffffff',
-                          border: '1px solid #e2e8f0',
-                          borderRadius: '8px',
-                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                          color: '#1e293b'
-                        }}
-                      />
-                      <Legend 
-                        iconType="circle"
-                        wrapperStyle={{ paddingTop: '20px' }}
-                      />
-                      <ReferenceLine 
-                        y={100} 
-                        stroke="#ef4444" 
-                        strokeDasharray="5 5" 
-                        strokeWidth={2}
-                        label={{ value: "100%", position: "right", fill: "#ef4444" }}
-                      />
-                      <Bar 
-                        dataKey="consultationOccupancy" 
-                        name="Consultation Occupancy"
-                        fill="#2563eb"
-                        radius={[4, 4, 0, 0]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-slate-200 shadow-sm overflow-x-auto">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-4 sm:mb-6">Consultation Occupancy Rate</h3>
+                  <div className="w-full min-w-[600px] sm:min-w-0">
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={occupancyData.consultationChartData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                        <XAxis 
+                          dataKey="date" 
+                          tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
+                          stroke="#94a3b8"
+                          style={{ fontSize: '10px' }}
+                          tickLine={false}
+                          axisLine={false}
+                          dy={10}
+                          interval="preserveStartEnd"
+                          angle={-45}
+                          textAnchor="end"
+                        />
+                        <YAxis 
+                          stroke="#94a3b8"
+                          style={{ fontSize: '12px' }}
+                          domain={[0, 100]}
+                          tickFormatter={(value) => `${value}%`}
+                          label={{ value: 'Occupancy Rate (%)', angle: -90, position: 'insideLeft', style: { fill: '#94a3b8' } }}
+                          tickLine={false}
+                          axisLine={false}
+                          dx={-10}
+                        />
+                        <Tooltip 
+                          labelFormatter={(label) => formatDate(label)}
+                          formatter={(value: number) => [`${value.toFixed(1)}%`, 'Consultation Occupancy']}
+                          contentStyle={{
+                            backgroundColor: '#ffffff',
+                            border: '1px solid #e2e8f0',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            color: '#1e293b'
+                          }}
+                        />
+                        <Legend 
+                          iconType="circle"
+                          wrapperStyle={{ paddingTop: '20px' }}
+                        />
+                        <ReferenceLine 
+                          y={100} 
+                          stroke="#ef4444" 
+                          strokeDasharray="5 5" 
+                          strokeWidth={2}
+                          label={{ value: "100%", position: "right", fill: "#ef4444" }}
+                        />
+                        <Bar 
+                          dataKey="consultationOccupancy" 
+                          name="Consultation Occupancy"
+                          fill="#2563eb"
+                          radius={[4, 4, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               )}
 
               {/* Procedure Stacked Bar Chart */}
               {occupancyData.procedureChartData && occupancyData.procedureChartData.length > 0 && occupancyData.procedureCodeNames.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Treatment Occupancy by Procedure Code</h3>
-                  <ResponsiveContainer width="100%" height={400}>
-                    <BarChart data={occupancyData.procedureChartData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                      <XAxis 
-                        dataKey="date" 
-                        tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
-                        stroke="#94a3b8"
-                        style={{ fontSize: '12px' }}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={10}
-                      />
-                      <YAxis 
-                        stroke="#94a3b8"
-                        style={{ fontSize: '12px' }}
-                        allowDecimals={false}
-                        domain={[0, 32]}
-                        label={{ value: 'Number of Treatments', angle: -90, position: 'insideLeft', style: { fill: '#94a3b8' } }}
-                        tickLine={false}
-                        axisLine={false}
-                        dx={-10}
-                      />
-                      <Tooltip 
-                        labelFormatter={(label) => formatDate(label)}
-                        contentStyle={{
-                          backgroundColor: '#ffffff',
-                          border: '1px solid #e2e8f0',
-                          borderRadius: '8px',
-                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                          color: '#1e293b'
-                        }}
-                      />
-                      <Legend 
-                        iconType="circle"
-                        wrapperStyle={{ paddingTop: '20px' }}
-                      />
-                      <ReferenceLine 
-                        y={32} 
-                        stroke="#ef4444" 
-                        strokeDasharray="5 5" 
-                        strokeWidth={2}
-                        label={{ value: "32 (100%)", position: "right", fill: "#ef4444" }}
-                      />
-                      {occupancyData.procedureCodeNames.map((proc, index) => {
-                        // Generate colors for each procedure code
-                        const colors = [
-                          '#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
-                          '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1',
-                          '#14b8a6', '#a855f7', '#f43f5e', '#0ea5e9', '#22c55e'
-                        ];
-                        const color = colors[index % colors.length];
-                        return (
-                          <Bar 
-                            key={proc.code}
-                            dataKey={proc.code} 
-                            stackId="procedures"
-                            name={proc.name || proc.code}
-                            fill={color}
-                          />
-                        );
-                      })}
-                    </BarChart>
-                  </ResponsiveContainer>
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-slate-200 shadow-sm overflow-x-auto">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-4 sm:mb-6">Treatment Occupancy by Procedure Code</h3>
+                  <div className="w-full min-w-[600px] sm:min-w-0">
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={occupancyData.procedureChartData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                        <XAxis 
+                          dataKey="date" 
+                          tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
+                          stroke="#94a3b8"
+                          style={{ fontSize: '10px' }}
+                          tickLine={false}
+                          axisLine={false}
+                          dy={10}
+                          interval="preserveStartEnd"
+                          angle={-45}
+                          textAnchor="end"
+                        />
+                        <YAxis 
+                          stroke="#94a3b8"
+                          style={{ fontSize: '12px' }}
+                          allowDecimals={false}
+                          domain={[0, 32]}
+                          label={{ value: 'Number of Treatments', angle: -90, position: 'insideLeft', style: { fill: '#94a3b8' } }}
+                          tickLine={false}
+                          axisLine={false}
+                          dx={-10}
+                        />
+                        <Tooltip 
+                          labelFormatter={(label) => formatDate(label)}
+                          contentStyle={{
+                            backgroundColor: '#ffffff',
+                            border: '1px solid #e2e8f0',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            color: '#1e293b'
+                          }}
+                        />
+                        <Legend 
+                          iconType="circle"
+                          wrapperStyle={{ paddingTop: '20px' }}
+                        />
+                        <ReferenceLine 
+                          y={32} 
+                          stroke="#ef4444" 
+                          strokeDasharray="5 5" 
+                          strokeWidth={2}
+                          label={{ value: "32 (100%)", position: "right", fill: "#ef4444" }}
+                        />
+                        {occupancyData.procedureCodeNames.map((proc, index) => {
+                          // Generate colors for each procedure code
+                          const colors = [
+                            '#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+                            '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1',
+                            '#14b8a6', '#a855f7', '#f43f5e', '#0ea5e9', '#22c55e'
+                          ];
+                          const color = colors[index % colors.length];
+                          return (
+                            <Bar 
+                              key={proc.code}
+                              dataKey={proc.code} 
+                              stackId="procedures"
+                              name={proc.name || proc.code}
+                              fill={color}
+                            />
+                          );
+                        })}
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               )}
 

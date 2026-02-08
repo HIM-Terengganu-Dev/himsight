@@ -11,6 +11,10 @@ interface NavItem {
   children?: NavItem[];
 }
 
+interface SidebarProps {
+  onClose?: () => void;
+}
+
 const navigation: NavItem[] = [
   { name: 'Home', href: '/' },
   {
@@ -24,7 +28,7 @@ const navigation: NavItem[] = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname();
   const [openGroups, setOpenGroups] = useState<string[]>(['Business Group']);
 
@@ -44,19 +48,37 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="flex flex-col w-64 h-full shrink-0">
+    <div className="flex flex-col w-64 h-full shrink-0 bg-white lg:bg-transparent">
       {/* Unified Floating Sidebar Container */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 flex-1 overflow-hidden flex flex-col">
+      <div className="bg-white lg:rounded-2xl lg:shadow-sm lg:border lg:border-slate-200 flex-1 overflow-hidden flex flex-col h-full">
+        {/* Mobile Header with Close Button */}
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-slate-200">
+          <h2 className="text-lg font-bold text-slate-900">Menu</h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+            aria-label="Close menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
         {/* Logo Section - Top of Sidebar */}
-        <div className="flex items-center justify-center pt-8 pb-6 px-4 shrink-0 border-b border-slate-100">
-          <Link href="/" className="flex items-center w-full justify-center transition-transform hover:scale-105 duration-200">
-            <div className="w-full h-24 flex items-center justify-center">
+        <div className="flex items-center justify-center pt-4 lg:pt-8 pb-4 lg:pb-6 px-4 shrink-0 border-b border-slate-100">
+          <Link 
+            href="/" 
+            className="flex items-center w-full justify-center transition-transform hover:scale-105 duration-200"
+            onClick={onClose}
+          >
+            <div className="w-full h-20 lg:h-24 flex items-center justify-center">
               <Image
                 src="/HS horizontal.svg"
                 alt="HIMSight Logo"
                 width={240}
                 height={80}
-                className="object-contain"
+                className="object-contain max-w-[200px] lg:max-w-none"
                 priority
               />
             </div>
@@ -106,6 +128,7 @@ export default function Sidebar() {
                           <li key={child.name}>
                             <Link
                               href={child.href}
+                              onClick={onClose}
                               className={`block px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
                                 isActive(child.href)
                                   ? 'text-blue-600 bg-blue-50 font-semibold translate-x-1'
@@ -122,6 +145,7 @@ export default function Sidebar() {
                 ) : (
                   <Link
                     href={item.href}
+                    onClick={onClose}
                     className={`block px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                       isActive(item.href)
                         ? 'bg-blue-600 text-white shadow-md'

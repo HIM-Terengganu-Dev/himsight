@@ -266,19 +266,23 @@ export default function DailyClosingDashboard() {
 
               {/* Line Chart - Procedure Closings Trend */}
               {closingData.chartData && closingData.chartData.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Procedure Closings Trend</h3>
-                  <ResponsiveContainer width="100%" height={400}>
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-slate-200 shadow-sm overflow-x-auto">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-4 sm:mb-6">Procedure Closings Trend</h3>
+                  <div className="w-full min-w-[600px] sm:min-w-0">
+                    <ResponsiveContainer width="100%" height={400}>
                     <LineChart data={closingData.chartData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                       <XAxis 
                         dataKey="date" 
                         tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
                         stroke="#94a3b8"
-                        style={{ fontSize: '12px' }}
+                        style={{ fontSize: '10px' }}
                         tickLine={false}
                         axisLine={false}
                         dy={10}
+                        interval="preserveStartEnd"
+                        angle={-45}
+                        textAnchor="end"
                       />
                       <YAxis 
                         stroke="#94a3b8"
@@ -324,6 +328,7 @@ export default function DailyClosingDashboard() {
                       })}
                     </LineChart>
                   </ResponsiveContainer>
+                  </div>
                 </div>
               )}
 

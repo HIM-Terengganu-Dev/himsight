@@ -274,20 +274,24 @@ export default function DailyRegistrationDashboard() {
 
               {/* Line Chart - Registration Trend */}
               {registrationData.chartData && registrationData.chartData.length > 0 && (
-                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-                  <h3 className="text-lg font-bold text-slate-900 mb-6">Registration Trend</h3>
-                  <ResponsiveContainer width="100%" height={400}>
-                    <LineChart data={registrationData.chartData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                      <XAxis 
-                        dataKey="date" 
-                        tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
-                        stroke="#94a3b8"
-                        style={{ fontSize: '12px' }}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={10}
-                      />
+                <div className="bg-white rounded-xl p-4 sm:p-6 border border-slate-200 shadow-sm overflow-x-auto">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-4 sm:mb-6">Registration Trend</h3>
+                  <div className="w-full min-w-[600px] sm:min-w-0">
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={registrationData.chartData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                        <XAxis 
+                          dataKey="date" 
+                          tickFormatter={(date) => new Date(date).toLocaleDateString('en-MY', { day: 'numeric', month: 'short' })}
+                          stroke="#94a3b8"
+                          style={{ fontSize: '10px' }}
+                          tickLine={false}
+                          axisLine={false}
+                          dy={10}
+                          interval="preserveStartEnd"
+                          angle={-45}
+                          textAnchor="end"
+                        />
                       <YAxis 
                         stroke="#94a3b8"
                         style={{ fontSize: '12px' }}
@@ -338,8 +342,9 @@ export default function DailyRegistrationDashboard() {
                         dot={{ fill: '#f59e0b', r: 3, strokeWidth: 0 }}
                         activeDot={{ r: 5, strokeWidth: 4, stroke: '#fde68a' }}
                       />
-                    </LineChart>
-                  </ResponsiveContainer>
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               )}
 

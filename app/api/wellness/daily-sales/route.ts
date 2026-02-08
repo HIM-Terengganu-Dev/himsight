@@ -16,15 +16,13 @@ export async function GET() {
     console.log('Database connection verified');
     
     // Get the latest date first
-    // invoice_date is timestamp without time zone stored in Malaysia time
-    // We need to tell PostgreSQL to treat it as Malaysia time before formatting
-    // The pattern: invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur' tells PostgreSQL
-    // "this timestamp is in Malaysia time", then we format it
+    // Use TO_CHAR to return date as string directly, avoiding timezone conversion issues
     const latestDateQuery = `
-      SELECT MAX(TO_CHAR(invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) as latest_date
+      SELECT MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')) as latest_date
       FROM him_ttdi.invoices;
     `;
     
+    console.log('Getting latest date...');
     const latestDateResult = await pool.query(latestDateQuery);
     const latestDate = latestDateResult.rows[0]?.latest_date;
     
@@ -41,17 +39,17 @@ export async function GET() {
       });
     }
 
-    console.log('Latest date (timezone-aware):', latestDate);
+    console.log('Latest date:', latestDate);
 
     // Get data for the latest date
-    // Use TO_CHAR with timezone handling in WHERE clause to match the date string format
+    // Use TO_CHAR in WHERE clause to match the date string format
     const query = `
       SELECT 
         COUNT(*) as total_visits,
         COALESCE(SUM(invoice_total), 0) as total_sales,
         COALESCE(AVG(invoice_total), 0) as avg_transaction
       FROM him_ttdi.invoices
-      WHERE TO_CHAR(invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
+      WHERE TO_CHAR(invoice_date, 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing main query for date:', latestDate);
@@ -113,7 +111,7 @@ export async function GET() {
       SELECT 
         COALESCE(SUM(invoice_total), 0) as yesterday_sales
       FROM him_ttdi.invoices
-      WHERE TO_CHAR(invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
+      WHERE TO_CHAR(invoice_date, 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing yesterday sales query for date:', yesterdayDateStr);
