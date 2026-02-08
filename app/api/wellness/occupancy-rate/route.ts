@@ -158,7 +158,8 @@ export async function GET(request: Request) {
     console.log(`Found ${procedureBreakdownResult.rows.length} procedure breakdown rows`);
     
     // Group procedure data by date for stacked bar chart
-    const procedureChartDataMap = new Map<string, { date: string; [procedureCode: string]: number }>();
+    type ProcedureChartDataPoint = { date: string; [key: string]: string | number };
+    const procedureChartDataMap = new Map<string, ProcedureChartDataPoint>();
     
     // Get all unique procedure codes from actual data
     const allProcedureCodes = new Set<string>();
@@ -180,15 +181,17 @@ export async function GET(request: Request) {
       procedureChartDataMap.set(dateStr, dayData);
     });
 
-    // Fill in actual counts
-    procedureBreakdownResult.rows.forEach((row: any) => {
-      const dateStr = normalizeDate(row.procedure_date);
-      const procedureCode = row.procedure_code;
-      if (procedureChartDataMap.has(dateStr) && procedureCode) {
-        const dayData = procedureChartDataMap.get(dateStr)!;
-        dayData[procedureCode] = parseInt(row.procedure_count) || 0;
-      }
-    });
+      // Fill in actual counts
+      procedureBreakdownResult.rows.forEach((row: any) => {
+        const dateStr = normalizeDate(row.procedure_date);
+        const procedureCode = row.procedure_code;
+        if (procedureChartDataMap.has(dateStr) && procedureCode) {
+          const dayData = procedureChartDataMap.get(dateStr)!;
+          const currentValue = dayData[procedureCode];
+          const numValue = typeof currentValue === 'number' ? currentValue : 0;
+          dayData[procedureCode] = parseInt(row.procedure_count) || numValue;
+        }
+      });
 
     const procedureChartData = Array.from(procedureChartDataMap.values())
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());

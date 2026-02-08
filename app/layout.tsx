@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "HIMSight TTDI Dashboard",
   description: "HIM Wellness TTDI Dashboard",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
