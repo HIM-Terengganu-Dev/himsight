@@ -219,11 +219,12 @@ export async function GET(request: Request) {
     console.log('Total rows:', result.rows.length);
 
     // Initialize chart data map with all dates in range
-    const chartDataMap = new Map<string, { date: string; [procedureCode: string]: number }>();
+    type ChartDataPoint = { date: string } & Record<string, number>;
+    const chartDataMap = new Map<string, ChartDataPoint>();
     
     for (let d = new Date(startDate); d <= new Date(endDate); d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().split('T')[0];
-      const dayData: any = { date: dateStr };
+      const dayData: ChartDataPoint = { date: dateStr };
       allProcedureCodes.forEach(code => {
         dayData[code] = 0;
       });
