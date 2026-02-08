@@ -16,13 +16,27 @@ export async function GET() {
     console.log('Database connection verified');
     
     // Get the latest date first
-    // Use TO_CHAR to return date as string directly, avoiding timezone conversion issues
-    const latestDateQuery = `
-      SELECT MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')) as latest_date
+    // invoice_date is timestamp without time zone stored in Malaysia time
+    // We need to explicitly handle it as Malaysia time before formatting
+    // First, get the actual latest timestamp to debug
+    const debugQuery = `
+      SELECT 
+        MAX(invoice_date) as max_timestamp,
+        MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')) as latest_date_char,
+        MAX(TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) as latest_date_tz
       FROM him_ttdi.invoices;
     `;
     
-    console.log('Getting latest date...');
+    console.log('Getting latest date with debug info...');
+    const debugResult = await pool.query(debugQuery);
+    console.log('Debug result:', debugResult.rows[0]);
+    
+    // Use the timezone-aware version
+    const latestDateQuery = `
+      SELECT MAX(TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) as latest_date
+      FROM him_ttdi.invoices;
+    `;
+    
     const latestDateResult = await pool.query(latestDateQuery);
     const latestDate = latestDateResult.rows[0]?.latest_date;
     
@@ -39,17 +53,17 @@ export async function GET() {
       });
     }
 
-    console.log('Latest date:', latestDate);
+    console.log('Latest date (timezone-aware):', latestDate);
 
     // Get data for the latest date
-    // Use TO_CHAR in WHERE clause to match the date string format
+    // Use TO_CHAR with timezone handling in WHERE clause to match the date string format
     const query = `
       SELECT 
         COUNT(*) as total_visits,
         COALESCE(SUM(invoice_total), 0) as total_sales,
         COALESCE(AVG(invoice_total), 0) as avg_transaction
       FROM him_ttdi.invoices
-      WHERE TO_CHAR(invoice_date, 'YYYY-MM-DD') = $1;
+      WHERE TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing main query for date:', latestDate);
@@ -111,7 +125,7 @@ export async function GET() {
       SELECT 
         COALESCE(SUM(invoice_total), 0) as yesterday_sales
       FROM him_ttdi.invoices
-      WHERE TO_CHAR(invoice_date, 'YYYY-MM-DD') = $1;
+      WHERE TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing yesterday sales query for date:', yesterdayDateStr);
