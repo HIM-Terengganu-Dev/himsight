@@ -12,20 +12,23 @@ export async function GET() {
     // Use TO_CHAR to return date as string directly, avoiding timezone conversion issues
     // Note: invoice_date is timestamp without time zone stored in Malaysia time
     // We use TO_CHAR directly on invoice_date to get the date string without timezone conversion
+    // For invoice_date, we need to handle it as Malaysia time (UTC+8)
     const latestDateQuery = `
       SELECT 
         GREATEST(
-          COALESCE(MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')), '1970-01-01'),
-          COALESCE(MAX(TO_CHAR(visit_date, 'YYYY-MM-DD')), '1970-01-01'),
-          COALESCE(MAX(TO_CHAR(prescription_date, 'YYYY-MM-DD')), '1970-01-01')
-        ) as latest_date
-      FROM (
-        SELECT invoice_date, NULL::date as visit_date, NULL::timestamp as prescription_date FROM him_ttdi.invoices
-        UNION ALL
-        SELECT NULL::timestamp, visit_date, NULL::timestamp FROM him_ttdi.consultations
-        UNION ALL
-        SELECT NULL::timestamp, NULL::date, prescription_date FROM him_ttdi.procedure_prescriptions
-      ) combined_dates;
+          COALESCE(
+            (SELECT MAX(TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) FROM him_ttdi.invoices),
+            '1970-01-01'
+          ),
+          COALESCE(
+            (SELECT MAX(TO_CHAR(visit_date, 'YYYY-MM-DD')) FROM him_ttdi.consultations),
+            '1970-01-01'
+          ),
+          COALESCE(
+            (SELECT MAX(TO_CHAR(prescription_date, 'YYYY-MM-DD')) FROM him_ttdi.procedure_prescriptions),
+            '1970-01-01'
+          )
+        ) as latest_date;
     `;
     
     const result = await pool.query(latestDateQuery);
