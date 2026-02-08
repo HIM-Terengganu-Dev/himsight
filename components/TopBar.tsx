@@ -19,46 +19,46 @@ export default function TopBar({ branch, onBranchChange }: TopBarProps) {
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg mb-4">
-      <div className="flex items-center justify-between p-4">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 mb-4 sticky top-0 z-10">
+      <div className="flex items-center justify-between p-3">
         {/* Navigation Links */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 bg-slate-100/50 p-1 rounded-xl">
           <Link
             href="/business-group/him-wellness/daily-sales"
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               isActive('/business-group/him-wellness/daily-sales')
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-white text-blue-600 shadow-sm ring-1 ring-black/5'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
             Daily Sales
           </Link>
           <Link
             href="/business-group/him-wellness/daily-closing"
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               isActive('/business-group/him-wellness/daily-closing')
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-white text-blue-600 shadow-sm ring-1 ring-black/5'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
             Daily Closing
           </Link>
           <Link
             href="/business-group/him-wellness/daily-registration"
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               isActive('/business-group/him-wellness/daily-registration')
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-white text-blue-600 shadow-sm ring-1 ring-black/5'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
             Daily Registration
           </Link>
           <Link
             href="/business-group/him-wellness/occupancy-rate"
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               isActive('/business-group/him-wellness/occupancy-rate')
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-white text-blue-600 shadow-sm ring-1 ring-black/5'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
             Occupancy Rate
@@ -67,23 +67,23 @@ export default function TopBar({ branch, onBranchChange }: TopBarProps) {
 
         {/* Branch Selector (if provided) */}
         {branch && onBranchChange && (
-          <div className="flex gap-2">
+          <div className="flex gap-1 bg-slate-100/50 p-1 rounded-xl">
             <button
               onClick={() => onBranchChange('TTDI')}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 branch === 'TTDI'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-white text-blue-600 shadow-sm ring-1 ring-black/5'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
               }`}
             >
               TTDI
             </button>
             <button
               onClick={() => onBranchChange('Bukit Jelutong')}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 branch === 'Bukit Jelutong'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-white text-blue-600 shadow-sm ring-1 ring-black/5'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
               }`}
             >
               Bukit Jelutong
