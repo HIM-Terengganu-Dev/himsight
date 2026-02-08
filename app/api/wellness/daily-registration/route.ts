@@ -161,6 +161,11 @@ export async function GET(request: Request) {
     // Generate chart data: group by date with new vs existing patients
     const chartDataMap = new Map<string, { date: string; newPatients: number; existingPatients: number; total: number }>();
     
+    // Ensure startDate and endDate are strings (not null)
+    if (!startDate || !endDate) {
+      throw new Error('startDate and endDate must be provided');
+    }
+    
     // Initialize all dates in range with 0 counts
     for (let d = new Date(startDate); d <= new Date(endDate); d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().split('T')[0];
