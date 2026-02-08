@@ -334,6 +334,7 @@ export default function DailySalesDashboard() {
                       />
                     </LineChart>
                   </ResponsiveContainer>
+                  </div>
                 </div>
               )}
             </div>
