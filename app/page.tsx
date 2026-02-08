@@ -7,7 +7,7 @@ export default function Home() {
         {/* Header / Title Area */}
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm mb-4">
           <h1 className="text-3xl font-bold text-slate-900">Welcome to HIMSight</h1>
-          <p className="text-slate-600 mt-2">HIM Wellness TTDI Dashboard System</p>
+          <p className="text-slate-600 mt-2">HIM Wellness Sdn. Bhd. Centralized Dashboard System</p>
         </div>
 
         {/* Main Content Area */}

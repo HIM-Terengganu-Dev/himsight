@@ -9,19 +9,21 @@ export async function GET() {
     }
 
     // Get the latest date from all relevant tables
+    // Note: invoice_date is timestamp without time zone stored in Malaysia time
+    // We need to add 8 hours before casting to date to get the correct Malaysia date
     const latestDateQuery = `
       SELECT 
         GREATEST(
-          COALESCE(MAX(invoice_date::date), '1970-01-01'::date),
+          COALESCE(MAX(DATE(invoice_date + INTERVAL '8 hours')), '1970-01-01'::date),
           COALESCE(MAX(visit_date), '1970-01-01'::date),
-          COALESCE(MAX((prescription_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur')::date), '1970-01-01'::date)
+          COALESCE(MAX(DATE(prescription_date)), '1970-01-01'::date)
         ) as latest_date
       FROM (
-        SELECT invoice_date::date, NULL::date as visit_date, NULL::date as prescription_date FROM him_ttdi.invoices
+        SELECT DATE(invoice_date + INTERVAL '8 hours') as invoice_date, NULL::date as visit_date, NULL::date as prescription_date FROM him_ttdi.invoices
         UNION ALL
         SELECT NULL::date, visit_date, NULL::date FROM him_ttdi.consultations
         UNION ALL
-        SELECT NULL::date, NULL::date, (prescription_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur')::date FROM him_ttdi.procedure_prescriptions
+        SELECT NULL::date, NULL::date, DATE(prescription_date) FROM him_ttdi.procedure_prescriptions
       ) combined_dates;
     `;
     

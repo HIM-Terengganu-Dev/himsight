@@ -23,14 +23,14 @@ export async function GET(request: Request) {
         // latestDate is already a string in YYYY-MM-DD format
         const latestDateObj = new Date(latestDate);
         const defaultStart = new Date(latestDateObj);
-        defaultStart.setDate(defaultStart.getDate() - 13); // 14 days including today
+        defaultStart.setDate(defaultStart.getDate() - 29); // 30 days including today
         endDate = latestDate; // Already in YYYY-MM-DD format
         startDate = defaultStart.toISOString().split('T')[0];
       } else {
         // Fallback if no data
         const today = new Date();
         const defaultStart = new Date();
-        defaultStart.setDate(defaultStart.getDate() - 13);
+        defaultStart.setDate(defaultStart.getDate() - 29);
         endDate = today.toISOString().split('T')[0];
         startDate = defaultStart.toISOString().split('T')[0];
       }

@@ -66,7 +66,7 @@ export default function DailyClosingDashboard() {
       if (json.latestDate) {
         const latestDate = new Date(json.latestDate);
         const startDate = new Date(latestDate);
-        startDate.setDate(startDate.getDate() - 13); // 14 days including latest date
+        startDate.setDate(startDate.getDate() - 29); // 30 days including latest date
         
         setDateRange({
           start: startDate.toISOString().split('T')[0],

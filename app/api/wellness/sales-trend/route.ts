@@ -19,14 +19,14 @@ export async function GET(request: Request) {
       
       if (latestDate) {
         const defaultStart = new Date(latestDate);
-        defaultStart.setDate(defaultStart.getDate() - 13); // 14 days including today
+        defaultStart.setDate(defaultStart.getDate() - 29); // 30 days including today
         endDate = latestDate.toISOString().split('T')[0];
         startDate = defaultStart.toISOString().split('T')[0];
       } else {
         // Fallback if no data
         const today = new Date();
         const defaultStart = new Date();
-        defaultStart.setDate(defaultStart.getDate() - 13);
+        defaultStart.setDate(defaultStart.getDate() - 29);
         endDate = today.toISOString().split('T')[0];
         startDate = defaultStart.toISOString().split('T')[0];
       }

@@ -20,14 +20,14 @@ export async function GET(request: Request) {
       
       if (latestDate) {
         const defaultStart = new Date(latestDate);
-        defaultStart.setDate(defaultStart.getDate() - 13); // 14 days including today
+        defaultStart.setDate(defaultStart.getDate() - 29); // 30 days including today
         endDate = latestDate.toISOString().split('T')[0];
         startDate = defaultStart.toISOString().split('T')[0];
       } else {
         // Fallback if no data
         const today = new Date();
         const defaultStart = new Date();
-        defaultStart.setDate(defaultStart.getDate() - 13);
+        defaultStart.setDate(defaultStart.getDate() - 29);
         endDate = today.toISOString().split('T')[0];
         startDate = defaultStart.toISOString().split('T')[0];
       }
@@ -221,6 +221,11 @@ export async function GET(request: Request) {
     // Initialize chart data map with all dates in range
     type ChartDataPoint = { date: string; [key: string]: string | number };
     const chartDataMap = new Map<string, ChartDataPoint>();
+    
+    // Ensure startDate and endDate are strings (not null)
+    if (!startDate || !endDate) {
+      throw new Error('startDate and endDate must be provided');
+    }
     
     for (let d = new Date(startDate); d <= new Date(endDate); d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().split('T')[0];

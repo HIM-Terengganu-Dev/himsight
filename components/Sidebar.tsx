@@ -50,13 +50,13 @@ export default function Sidebar() {
         {/* Logo Section - Top of Sidebar */}
         <div className="flex items-center justify-center pt-8 pb-6 px-4 shrink-0 border-b border-slate-100">
           <Link href="/" className="flex items-center w-full justify-center transition-transform hover:scale-105 duration-200">
-            <div className="w-full h-24 flex items-center justify-center relative">
+            <div className="w-full h-24 flex items-center justify-center">
               <Image
-                src="/himsight-side-Photoroom.png"
+                src="/HS horizontal.svg"
                 alt="HIMSight Logo"
-                fill
-                className="object-contain scale-110"
-                sizes="(max-width: 256px) 100vw, 256px"
+                width={240}
+                height={80}
+                className="object-contain"
                 priority
               />
             </div>
