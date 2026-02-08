@@ -255,7 +255,9 @@ export async function GET(request: Request) {
 
       if (chartDataMap.has(dateStr)) {
         const dayData = chartDataMap.get(dateStr)!;
-        dayData[procedureCode] = (dayData[procedureCode] || 0) + 1;
+        const currentValue = dayData[procedureCode];
+        const numValue = typeof currentValue === 'number' ? currentValue : 0;
+        dayData[procedureCode] = numValue + 1;
       }
     });
 
