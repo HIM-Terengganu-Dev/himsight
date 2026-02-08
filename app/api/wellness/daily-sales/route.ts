@@ -17,23 +17,11 @@ export async function GET() {
     
     // Get the latest date first
     // invoice_date is timestamp without time zone stored in Malaysia time
-    // We need to explicitly handle it as Malaysia time before formatting
-    // First, get the actual latest timestamp to debug
-    const debugQuery = `
-      SELECT 
-        MAX(invoice_date) as max_timestamp,
-        MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')) as latest_date_char,
-        MAX(TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) as latest_date_tz
-      FROM him_ttdi.invoices;
-    `;
-    
-    console.log('Getting latest date with debug info...');
-    const debugResult = await pool.query(debugQuery);
-    console.log('Debug result:', debugResult.rows[0]);
-    
-    // Use the timezone-aware version
+    // We need to tell PostgreSQL to treat it as Malaysia time before formatting
+    // The pattern: invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur' tells PostgreSQL
+    // "this timestamp is in Malaysia time", then we format it
     const latestDateQuery = `
-      SELECT MAX(TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) as latest_date
+      SELECT MAX(TO_CHAR(invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD')) as latest_date
       FROM him_ttdi.invoices;
     `;
     
@@ -63,7 +51,7 @@ export async function GET() {
         COALESCE(SUM(invoice_total), 0) as total_sales,
         COALESCE(AVG(invoice_total), 0) as avg_transaction
       FROM him_ttdi.invoices
-      WHERE TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
+      WHERE TO_CHAR(invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing main query for date:', latestDate);
@@ -125,7 +113,7 @@ export async function GET() {
       SELECT 
         COALESCE(SUM(invoice_total), 0) as yesterday_sales
       FROM him_ttdi.invoices
-      WHERE TO_CHAR(invoice_date AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
+      WHERE TO_CHAR(invoice_date::text::timestamp AT TIME ZONE 'Asia/Kuala_Lumpur', 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing yesterday sales query for date:', yesterdayDateStr);

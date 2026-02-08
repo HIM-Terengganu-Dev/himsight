@@ -43,13 +43,13 @@ export async function GET(request: Request) {
 
     const query = `
       SELECT 
-        invoice_date::date as date,
+        TO_CHAR(invoice_date, 'YYYY-MM-DD') as date,
         COALESCE(SUM(invoice_total), 0) as total_sales,
         COUNT(*) as visit_count
       FROM him_ttdi.invoices
-      WHERE invoice_date::date >= $1::date
-      AND invoice_date::date <= $2::date
-      GROUP BY invoice_date::date
+      WHERE TO_CHAR(invoice_date, 'YYYY-MM-DD') >= $1
+      AND TO_CHAR(invoice_date, 'YYYY-MM-DD') <= $2
+      GROUP BY TO_CHAR(invoice_date, 'YYYY-MM-DD')
       ORDER BY date ASC;
     `;
 
@@ -57,12 +57,9 @@ export async function GET(request: Request) {
     console.log(`Found ${result.rows.length} days of data`);
 
     const data = result.rows.map(row => {
-      // Ensure date is returned as string in YYYY-MM-DD format
-      const dateStr = typeof row.date === 'string' 
-        ? row.date 
-        : row.date.toISOString().split('T')[0];
+      // date is already a string in YYYY-MM-DD format from TO_CHAR
       return {
-        date: dateStr,
+        date: row.date,
         totalSales: parseFloat(row.total_sales) || 0,
         visitCount: parseInt(row.visit_count) || 0,
       };
