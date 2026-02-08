@@ -64,13 +64,24 @@ export default function DailyRegistrationDashboard() {
       const json = await response.json();
       
       if (json.latestDate) {
-        const latestDate = new Date(json.latestDate);
+        // Parse date string directly without timezone conversion
+        // json.latestDate is already in YYYY-MM-DD format
+        const [year, month, day] = json.latestDate.split('-').map(Number);
+        const latestDate = new Date(year, month - 1, day); // month is 0-indexed
         const startDate = new Date(latestDate);
         startDate.setDate(startDate.getDate() - 29); // 30 days including latest date
         
+        // Format as YYYY-MM-DD without timezone conversion
+        const formatDate = (date: Date) => {
+          const y = date.getFullYear();
+          const m = String(date.getMonth() + 1).padStart(2, '0');
+          const d = String(date.getDate()).padStart(2, '0');
+          return `${y}-${m}-${d}`;
+        };
+        
         setDateRange({
-          start: startDate.toISOString().split('T')[0],
-          end: latestDate.toISOString().split('T')[0],
+          start: formatDate(startDate),
+          end: formatDate(latestDate),
         });
       } else {
         // Fallback to today if no data
