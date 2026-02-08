@@ -50,9 +50,24 @@ export default function DailyClosingDashboard() {
   const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
   const [dateRangeInitialized, setDateRangeInitialized] = useState(false);
 
-  // Fetch latest date from database and set default date range
+  // Check sessionStorage first, then fetch default date range
   useEffect(() => {
     if (selectedBranch === 'TTDI' && !dateRangeInitialized) {
+      // Check sessionStorage for saved date range
+      const savedDateRange = sessionStorage.getItem('him-wellness-date-range');
+      if (savedDateRange) {
+        try {
+          const parsed = JSON.parse(savedDateRange);
+          if (parsed.start && parsed.end) {
+            setDateRange({ start: parsed.start, end: parsed.end });
+            setDateRangeInitialized(true);
+            return;
+          }
+        } catch (e) {
+          console.error('Failed to parse saved date range:', e);
+        }
+      }
+      // No saved date range, fetch default
       fetchLatestDate();
     }
   }, [selectedBranch, dateRangeInitialized]);
@@ -79,19 +94,21 @@ export default function DailyClosingDashboard() {
           return `${y}-${m}-${d}`;
         };
         
-        setDateRange({
+        const defaultRange = {
           start: formatDate(startDate),
           end: formatDate(latestDate),
-        });
+        };
+        setDateRange(defaultRange);
       } else {
         // Fallback to today if no data
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - 13);
-        setDateRange({
+        const defaultRange = {
           start: startDate.toISOString().split('T')[0],
           end: endDate.toISOString().split('T')[0],
-        });
+        };
+        setDateRange(defaultRange);
       }
       setDateRangeInitialized(true);
     } catch (err) {
@@ -100,10 +117,11 @@ export default function DailyClosingDashboard() {
       const endDate = new Date();
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - 13);
-      setDateRange({
+      const defaultRange = {
         start: startDate.toISOString().split('T')[0],
         end: endDate.toISOString().split('T')[0],
-      });
+      };
+      setDateRange(defaultRange);
       setDateRangeInitialized(true);
     }
   };
@@ -141,7 +159,10 @@ export default function DailyClosingDashboard() {
   };
 
   const handleDateChange = (startDate: string, endDate: string) => {
-    setDateRange({ start: startDate, end: endDate });
+    const newRange = { start: startDate, end: endDate };
+    setDateRange(newRange);
+    // Save to sessionStorage so it persists across pages
+    sessionStorage.setItem('him-wellness-date-range', JSON.stringify(newRange));
   };
 
   const formatDate = (dateString: string) => {
