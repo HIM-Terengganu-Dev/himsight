@@ -10,8 +10,9 @@ export async function GET(request: Request) {
 
     // If no dates provided, default to last 14 days
     if (!startDate || !endDate) {
+      // Use TO_CHAR to get date as string directly, avoiding timezone conversion issues
       const latestDateQuery = `
-        SELECT MAX(DATE(invoice_date + INTERVAL '8 hours')) as latest_date
+        SELECT MAX(TO_CHAR(invoice_date, 'YYYY-MM-DD')) as latest_date
         FROM him_ttdi.invoices
         WHERE invoice_total = 50;
       `;
@@ -19,9 +20,11 @@ export async function GET(request: Request) {
       const latestDate = latestDateResult.rows[0]?.latest_date;
       
       if (latestDate) {
-        const defaultStart = new Date(latestDate);
+        // latestDate is already a string in YYYY-MM-DD format
+        const latestDateObj = new Date(latestDate);
+        const defaultStart = new Date(latestDateObj);
         defaultStart.setDate(defaultStart.getDate() - 13); // 14 days including today
-        endDate = latestDate.toISOString().split('T')[0];
+        endDate = latestDate; // Already in YYYY-MM-DD format
         startDate = defaultStart.toISOString().split('T')[0];
       } else {
         // Fallback if no data
@@ -51,12 +54,11 @@ export async function GET(request: Request) {
           i.invoice_id,
           i.patient_id,
           i.invoice_date,
-          -- Convert UTC timestamp to Malaysia time (UTC+8) for proper date extraction
-          -- invoice_date is stored as timestamp without timezone, assumed to be UTC
-          DATE(i.invoice_date + INTERVAL '8 hours') as invoice_date_malaysia,
+          -- Use TO_CHAR to get date as string directly, avoiding timezone conversion
+          TO_CHAR(i.invoice_date, 'YYYY-MM-DD') as invoice_date_str,
           ROW_NUMBER() OVER (
             PARTITION BY i.patient_id 
-            ORDER BY DATE(i.invoice_date + INTERVAL '8 hours') ASC, 
+            ORDER BY TO_CHAR(i.invoice_date, 'YYYY-MM-DD') ASC, 
                      i.invoice_date ASC
           ) as rm50_rank
         FROM him_ttdi.invoices i
@@ -66,7 +68,7 @@ export async function GET(request: Request) {
           SELECT 1 
           FROM him_ttdi.consultations c
           WHERE c.patient_id = i.patient_id
-          AND DATE(c.visit_date + INTERVAL '8 hours') = DATE(i.invoice_date + INTERVAL '8 hours')
+          AND TO_CHAR(c.visit_date, 'YYYY-MM-DD') = TO_CHAR(i.invoice_date, 'YYYY-MM-DD')
           AND c.total_payment = 50
         )
       )
@@ -76,7 +78,7 @@ export async function GET(request: Request) {
         p.name as patient_name,
         p.phone_no,
         p.mrn_no,
-        DATE(i.invoice_date + INTERVAL '8 hours') as registration_date,
+        TO_CHAR(i.invoice_date, 'YYYY-MM-DD') as registration_date,
         i.invoice_code,
         i.receipt_code,
         d.doctor_name,
@@ -88,8 +90,8 @@ export async function GET(request: Request) {
       INNER JOIN him_ttdi.patients p ON i.patient_id = p.patient_id
       LEFT JOIN him_ttdi.doctors d ON i.doctor_id = d.doctor_id
       INNER JOIN patient_rm50_invoices pri ON i.invoice_id = pri.invoice_id
-      WHERE DATE(i.invoice_date + INTERVAL '8 hours') >= $1::date
-      AND DATE(i.invoice_date + INTERVAL '8 hours') <= $2::date
+      WHERE TO_CHAR(i.invoice_date, 'YYYY-MM-DD') >= $1
+      AND TO_CHAR(i.invoice_date, 'YYYY-MM-DD') <= $2
       AND i.invoice_total = 50
       ORDER BY i.invoice_date DESC, i.patient_id;
     `;
