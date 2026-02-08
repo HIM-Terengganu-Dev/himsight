@@ -42,13 +42,14 @@ export async function GET() {
     console.log('Latest date:', latestDate);
 
     // Get data for the latest date
+    // Use TO_CHAR in WHERE clause to match the date string format
     const query = `
       SELECT 
         COUNT(*) as total_visits,
         COALESCE(SUM(invoice_total), 0) as total_sales,
         COALESCE(AVG(invoice_total), 0) as avg_transaction
       FROM him_ttdi.invoices
-      WHERE invoice_date::date = $1::date;
+      WHERE TO_CHAR(invoice_date, 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing main query for date:', latestDate);
@@ -110,7 +111,7 @@ export async function GET() {
       SELECT 
         COALESCE(SUM(invoice_total), 0) as yesterday_sales
       FROM him_ttdi.invoices
-      WHERE invoice_date::date = $1::date;
+      WHERE TO_CHAR(invoice_date, 'YYYY-MM-DD') = $1;
     `;
 
     console.log('Executing yesterday sales query for date:', yesterdayDateStr);
