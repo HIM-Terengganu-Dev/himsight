@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "HIMSight TTDI Dashboard",
+  title: "HIMSight",
   description: "HIM Wellness TTDI Dashboard",
   icons: {
     icon: '/favicon.svg',
