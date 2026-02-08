@@ -219,7 +219,7 @@ export async function GET(request: Request) {
     console.log('Total rows:', result.rows.length);
 
     // Initialize chart data map with all dates in range
-    type ChartDataPoint = { date: string } & Record<string, number>;
+    type ChartDataPoint = { date: string; [key: string]: string | number };
     const chartDataMap = new Map<string, ChartDataPoint>();
     
     for (let d = new Date(startDate); d <= new Date(endDate); d.setDate(d.getDate() + 1)) {
