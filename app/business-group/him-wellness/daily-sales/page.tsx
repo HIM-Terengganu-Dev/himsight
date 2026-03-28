@@ -10,6 +10,8 @@ type Branch = 'TTDI' | 'Bukit Jelutong';
 
 interface DailySalesData {
   latestDate: string;
+  startDate?: string;
+  endDate?: string;
   totalVisits: number;
   totalSales: number;
   avgTransaction: number;
@@ -128,7 +130,7 @@ export default function DailySalesDashboard() {
       });
 
       // Fetch daily sales data
-      const dailyResponse = await fetch('/api/wellness/daily-sales');
+      const dailyResponse = await fetch(`/api/wellness/daily-sales?${params}`);
       if (!dailyResponse.ok) throw new Error('Failed to fetch daily sales');
       const dailyJson = await dailyResponse.json();
       setDailyData(dailyJson);
@@ -217,7 +219,11 @@ export default function DailySalesDashboard() {
               <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
                 <p className="text-sm text-slate-600 font-medium flex items-center gap-2">
                   <span className="text-slate-400">📅</span>
-                  Latest Data: <span className="font-bold text-slate-900">{formatDate(dailyData.latestDate)}</span>
+                  Selected Period: <span className="font-bold text-slate-900">
+                    {dailyData.startDate && dailyData.endDate 
+                      ? `${formatDate(dailyData.startDate)} to ${formatDate(dailyData.endDate)}` 
+                      : formatDate(dailyData.latestDate)}
+                  </span>
                 </p>
               </div>
 
@@ -242,7 +248,7 @@ export default function DailySalesDashboard() {
                     }`}>
                       {dailyData.trend >= 0 ? '+' : ''}{dailyData.trend}%
                     </span>
-                    <span className="text-xs text-slate-400 font-medium">vs previous day</span>
+                    <span className="text-xs text-slate-400 font-medium">vs previous period</span>
                   </div>
                 </div>
 
